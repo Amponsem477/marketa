@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 50%, #ff69b4 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating hearts animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: float-up 15s infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Language toggle */
+        .language-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Georgia', serif;
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main content */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #fff;
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Love message section */
+        .love-message {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 60px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .love-message p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #d63384;
+            margin-bottom: 15px;
+        }
+
+        .photo-count {
+            font-size: 1.1rem;
+            color: #ff69b4;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Photo gallery - Masonry style */
+        .gallery {
+            column-count: 3;
+            column-gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            break-inside: avoid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .photo-wrapper {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-card:hover .photo-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .photo-number {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Music controls */
+        .music-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .music-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer message */
+        .footer-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .gallery {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .love-message p {
+                font-size: 1.1rem;
+            }
+
+            .gallery {
+                column-count: 1;
+            }
+
+            .lightbox-nav {
+                font-size: 30px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .lightbox-close {
+                font-size: 30px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .language-toggle {
+                top: 20px;
+                right: 20px;
+            }
+
+            .lang-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Staggered animation delays */
+        .photo-card:nth-child(n+1) { animation-delay: 0.1s; }
+        .photo-card:nth-child(n+6) { animation-delay: 0.2s; }
+        .photo-card:nth-child(n+12) { animation-delay: 0.3s; }
+        .photo-card:nth-child(n+18) { animation-delay: 0.4s; }
+        .photo-card:nth-child(n+24) { animation-delay: 0.5s; }
+        .photo-card:nth-child(n+30) { animation-delay: 0.6s; }
+        .photo-card:nth-child(n+36) { animation-delay: 0.7s; }
+        .photo-card:nth-child(n+42) { animation-delay: 0.8s; }
+        .photo-card:nth-child(n+48) { animation-delay: 0.9s; }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Language toggle -->
+    <div class="language-toggle">
+        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">
+            <span id="langFlag">🇨🇿</span>
+            <span id="langText">Čeština</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 id="mainTitle">Happy Valentine's Day</h1>
+            <p class="subtitle" id="subtitle">To the love of my life ❤️</p>
+        </header>
+
+        <div class="love-message">
+            <p id="message1">Every moment with you is a treasure I hold close to my heart.</p>
+            <p id="message2">Here are 57 beautiful memories of our journey together...</p>
+            <p class="photo-count" id="photoCount">57 moments • Infinite love</p>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <!-- Photo cards will be generated by JavaScript -->
+        </div>
+
+        <div class="footer-message" id="footerMessage">
+            I love you more than words can say ❤️
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" id="closeLightbox">×</div>
+        <div class="lightbox-nav lightbox-prev" id="prevPhoto">‹</div>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="Photo">
+        </div>
+        <div class="lightbox-nav lightbox-next" id="nextPhoto">›</div>
+    </div>
+
+    <!-- Music controls -->
+    <div class="music-controls">
+        <button class="music-btn" id="musicBtn" title="Play/Pause Music">🎵</button>
+    </div>
+
+    <!-- Audio element -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                mainTitle: "Happy Valentine's Day",
+                subtitle: "To the love of my life ❤️",
+                message1: "Every moment with you is a treasure I hold close to my heart.",
+                message2: "Here are 57 beautiful memories of our journey together...",
+                photoCount: "57 moments • Infinite love",
+                footerMessage: "I love you more than words can say ❤️",
+                langFlag: "🇨🇿",
+                langText: "Čeština"
+            },
+            cs: {
+                mainTitle: "Šťastný Valentýn",
+                subtitle: "Lásce mého života ❤️",
+                message1: "Každý okamžik s tebou je poklad, který držím blízko svého srdce.",
+                message2: "Zde je 57 krásných vzpomínek z naší společné cesty...",
+                photoCount: "57 okamžiků • Nekonečná láska",
+                footerMessage: "Miluji tě víc, než mohou slova vyjádřit ❤️",
+                langFlag: "🇬🇧",
+                langText: "English"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'cs' : 'en';
+            updateContent();
+        }
+
+        function updateContent() {
+            const t = translations[currentLang];
+            document.getElementById('mainTitle').textContent = t.mainTitle;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('message1').textContent = t.message1;
+            document.getElementById('message2').textContent = t.message2;
+            document.getElementById('photoCount').textContent = t.photoCount;
+            document.getElementById('footerMessage').textContent = t.footerMessage;
+            document.getElementById('langFlag').textContent = t.langFlag;
+            document.getElementById('langText').textContent = t.langText;
+        }
+
+        // Photo filenames array - all 57 photos with correct names
+        const photos = [
+            'photo_2026-02-14_00-31-05.jpg',
+            'photo_2026-02-14_00-31-04.jpg',
+            'photo_2026-02-14_00-31-03.jpg',
+            'photo_2026-02-14_00-31-02.jpg',
+            'photo_2026-02-14_00-31-00.jpg',
+            'photo_2026-02-14_00-30-59.jpg',
+            'photo_2026-02-14_00-30-58.jpg',
+            'photo_2026-02-14_00-30-57.jpg',
+            'photo_2026-02-14_00-30-56.jpg',
+            'photo_2026-02-14_00-30-55.jpg',
+            'photo_2026-02-14_00-30-53.jpg',
+            'photo_2026-02-14_00-30-52.jpg',
+            'photo_2026-02-14_00-30-51.jpg',
+            'photo_2026-02-14_00-30-49.jpg',
+            'photo_2026-02-14_00-30-48.jpg',
+            'photo_2026-02-14_00-30-46.jpg',
+            'photo_2026-02-14_00-30-45.jpg',
+            'photo_2026-02-14_00-30-44.jpg',
+            'photo_2026-02-14_00-30-41.jpg',
+            'photo_2026-02-14_00-30-36.jpg',
+            'photo_2026-02-14_00-30-32.jpg',
+            'photo_2026-02-14_00-31-36.jpg',
+            'photo_2026-02-14_00-31-35.jpg',
+            'photo_2026-02-14_00-31-31.jpg',
+            'photo_2026-02-14_00-31-29.jpg',
+            'photo_2026-02-14_00-31-28.jpg',
+            'photo_2026-02-14_00-31-26.jpg',
+            'photo_2026-02-14_00-31-25.jpg',
+            'photo_2026-02-14_00-31-24.jpg',
+            'photo_2026-02-14_00-31-23.jpg',
+            'photo_2026-02-14_00-31-21.jpg',
+            'photo_2026-02-14_00-31-19.jpg',
+            'photo_2026-02-14_00-31-18.jpg',
+            'photo_2026-02-14_00-31-16.jpg',
+            'photo_2026-02-14_00-31-15.jpg',
+            'photo_2026-02-14_00-31-14.jpg',
+            'photo_2026-02-14_00-31-13.jpg',
+            'photo_2026-02-14_00-31-11.jpg',
+            'photo_2026-02-14_00-31-10.jpg',
+            'photo_2026-02-14_00-31-09.jpg',
+            'photo_2026-02-14_00-31-08.jpg',
+            'photo_2026-02-14_00-31-06.jpg',
+            'photo_2026-02-14_00-31-55.jpg',
+            'photo_2026-02-14_00-31-54.jpg',
+            'photo_2026-02-14_00-31-53.jpg',
+            'photo_2026-02-14_00-31-51.jpg',
+            'photo_2026-02-14_00-31-50.jpg',
+            'photo_2026-02-14_00-31-49.jpg',
+            'photo_2026-02-14_00-31-47.jpg',
+            'photo_2026-02-14_00-31-46.jpg',
+            'photo_2026-02-14_00-31-45.jpg',
+            'photo_2026-02-14_00-31-43.jpg',
+            'photo_2026-02-14_00-31-42.jpg',
+            'photo_2026-02-14_00-31-41.jpg',
+            'photo_2026-02-14_00-31-40.jpg',
+            'photo_2026-02-14_00-31-38.jpg',
+            'photo_2026-02-14_00-31-37.jpg'
+        ];
+
+        // Generate gallery
+        const gallery = document.getElementById('gallery');
+        photos.forEach((photo, index) => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.innerHTML = `
+                <div class="photo-wrapper">
+                    <img src="${photo}" alt="Memory ${index + 1}" loading="lazy">
+                    <div class="photo-number">${index + 1}</div>
+                </div>
+            `;
+            card.addEventListener('click', () => openLightbox(index));
+            gallery.appendChild(card);
+        });
+
+        // Lightbox functionality
+        let currentIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        function openLightbox(index) {
+            currentIndex = index;
+            lightboxImg.src = photos[index];
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function nextPhoto() {
+            currentIndex = (currentIndex + 1) % photos.length;
+            lightboxImg.src = photos[currentIndex];
+        }
+
+        function prevPhoto() {
+            currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+            lightboxImg.src = photos[currentIndex];
+        }
+
+        document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
+        document.getElementById('nextPhoto').addEventListener('click', nextPhoto);
+        document.getElementById('prevPhoto').addEventListener('click', prevPhoto);
+
+        // Close lightbox on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'ArrowRight') nextPhoto();
+            if (e.key === 'ArrowLeft') prevPhoto();
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Floating hearts animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.getElementById('heartsContainer').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 15000);
+        }
+
+        setInterval(createHeart, 800);
+
+        // Music controls
+        const musicBtn = document.getElementById('musicBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicBtn.innerHTML = '🎵';
+            } else {
+                bgMusic.play();
+                musicBtn.innerHTML = '⏸️';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Auto-play music (with user interaction)
+        document.addEventListener('click', () => {
+            if (!isPlaying) {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicBtn.innerHTML = '⏸️';
+                }).catch(err => {
+                    console.log('Autoplay prevented:', err);
+                });
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>
